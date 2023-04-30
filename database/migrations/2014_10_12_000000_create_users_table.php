@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('phone_number');
             $table->string('password');
             $table->string('image_url');
+	    $table->enum("role", ["admin", "regular"])->default("regular");
             $table->rememberToken();
             $table->timestamps();
         });

@@ -11,17 +11,15 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    function kil() {
+	$this->createToken("abrakada");
+    }
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ["firstname", "lastname", "email_address", "country", "phone_number", "image_url", "password"];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,5 +38,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+	'phone_number' => 'array'
     ];
 }

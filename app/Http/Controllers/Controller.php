@@ -10,7 +10,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
     
-      protected function success($payload, $statusCode = 200, $message = null)
+      public function success($payload, $statusCode = 200, $message = null)
     {
 	$data = [
 	    "status" => "success",
@@ -21,7 +21,7 @@ class Controller extends BaseController
 	return response()->json($data, $statusCode);
     }
     
-        protected function error($errors, $reason = "validation failed", $statusCode = 400 )
+        public function error($errors, $reason = "validation failed", $statusCode = 400 )
     {
 	$data = [
 	    "status" => "failed",

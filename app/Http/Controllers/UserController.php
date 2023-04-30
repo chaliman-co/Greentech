@@ -53,7 +53,7 @@ class UserController extends Controller {
 	$credentials = $validator->getData();
 	if (Auth::attempt($credentials))
 	{
-	    $token = $request->user()->createToken("spa", ["role" => $request->user()->role]);
+	    $token = $request->user()->createToken("spa", [$request->user()->role]);
 
 	    return $this->success(['token' => $token->plainTextToken]);
 	}
@@ -62,5 +62,6 @@ class UserController extends Controller {
 	    return $this->error(["password" => "incorrect password", "email_address" => "incorrect email address"], "Authentication failed", 401);
 	}
     }
+
 
 }

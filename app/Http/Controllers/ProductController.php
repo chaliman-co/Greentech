@@ -36,7 +36,21 @@ class ProductController extends Controller {
 
     function getAllProducts(Request $request)
     {
-	return $this->success(Product::all());
+	$validator = Validator::make($request->all(),
+			[
+			    'skip' => ["integer", "min:0"],
+			    'limit' => ['integer', "min:0", "max:50"],
+			]
+	);
+	if ($validator->fails())
+	{
+	    return $this->error($validator->errors());
+	}
+	$validatedData = $validator->getData();
+	$skip = array_key_exists("skip", $validatedData) ? $validatedData["skip"]:  0;
+	$limit = array_key_exists("limit", $validatedData) ? $validatedData["limit"]:  50;
+	$total = Product::count();
+	return $this->success(["limit" => $limit, "skip" => $skip, "total" => $total, "data" => Product::offset($skip)->limit($limit)->get()]);
     }
 
     function getProduct(Request $request, Product $product)

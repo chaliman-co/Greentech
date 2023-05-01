@@ -28,6 +28,7 @@ export async function deleteFromApi (path) {
   }
 }
 export async function updateAtApi (path, body) {
+  path += ~path.indexOf("?") ? "&_method=patch" : "?_method=patch"
   const headers = new Headers({"Accept": "application/json"})
   if (body instanceof JsonBody) headers.append('Content-Type', body.type)
   const apiToken = window.sessionStorage.getItem('api_token')
@@ -35,7 +36,7 @@ export async function updateAtApi (path, body) {
   try {
     const response = await fetch(resolvePath(path), {
       headers,
-      method: 'PATCH',
+      method: 'POST',
       body: body && body.payload
     })
     return ApiResponse.create(response)

@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:1.2
 FROM richarvey/nginx-php-fpm:3.1.4
 
 COPY . .
@@ -16,5 +17,6 @@ ENV LOG_CHANNEL stderr
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
-
+RUN apk add --update nodejs npm                  
+RUN --mount=type=secret,id=_env,dst=/var/www/html/.env cp /var/www/html/.env /var/www/html/public/.env
 CMD ["/start.sh"]

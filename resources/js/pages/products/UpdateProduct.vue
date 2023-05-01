@@ -92,4 +92,22 @@ async function submit(event) {
     loading.value = false;
   }
 }
+  async function deleteProduct() {
+    try {
+    let response = await deleteFromApi(
+      `/products/${product.value.id}`
+    );
+    if (response.failed) {
+      errors.value = handleErrors(response, false);
+    } else {
+      store.commit("delete_product", product.value)
+      successNotification(`Product was deleted successfully`);
+      redirect("/products", 5000)
+    }
+  } catch (err) {
+    errorNotification("Network Error");
+  } finally {
+    loading.value = false;
+  }
+  }
 </script>

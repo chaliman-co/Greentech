@@ -30,6 +30,7 @@ Route::get('/products/{product}', [ProductController::class, "getProduct"]);
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/users/{user}', [UserController::class, "getUser"]);
+    Route::get('/profile', [UserController::class, "getProfile"]);
     Route::patch('/users/{user}', [UserController::class, "editUser"]);
 
     Route::group(['middleware' => "ability:admin"], function () {

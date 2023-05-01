@@ -105,7 +105,9 @@ class UserController extends Controller {
 	}
 	$user->save();
 	return $this->success($user, message: "User information was updated successfully");
-    
+    }
+    public function getProfile(Request $request) {
+	return $this->success($request->user());
     }
 
 }

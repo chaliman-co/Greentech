@@ -39,5 +39,11 @@ class Handler extends ExceptionHandler
 		return (new Controller())->error([], "Authentication failed", 401);
 	    }
 	});
+	$this->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+	    if ($request->is('api/*'))
+	    {
+		return (new Controller())->error([], "Resource not found", 404);
+	    }
+	});
     }
 }

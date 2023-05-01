@@ -3,7 +3,7 @@ import router from './router/router'
 import store from './store/store'
 const API_URL = import.meta.env.VITE_API_URL
 export async function getFromApi (path) {
-  const headers = new Headers()
+  const headers = new Headers({"Accept": "application/json"})
   const apiToken = window.sessionStorage.getItem('api_token')
   if (apiToken) headers.set('Authorization', `Bearer ${apiToken}`)
   try {
@@ -14,7 +14,7 @@ export async function getFromApi (path) {
   }
 }
 export async function deleteFromApi (path) {
-  const headers = new Headers()
+  const headers = new Headers({"Accept": "application/json"})
   const apiToken = window.sessionStorage.getItem('api_token')
   if (apiToken) headers.set('Authorization', `Bearer ${apiToken}`)
   try {
@@ -28,7 +28,7 @@ export async function deleteFromApi (path) {
   }
 }
 export async function updateAtApi (path, body) {
-  const headers = new Headers()
+  const headers = new Headers({"Accept": "application/json"})
   if (body instanceof JsonBody) headers.append('Content-Type', body.type)
   const apiToken = window.sessionStorage.getItem('api_token')
   if (apiToken) headers.set('Authorization', `Bearer ${apiToken}`)
@@ -44,7 +44,7 @@ export async function updateAtApi (path, body) {
   }
 }
 export async function postToApi (path, body) {
-  const headers = new Headers()
+  const headers = new Headers({"Accept": "application/json"})
   const apiToken = window.sessionStorage.getItem('api_token')
   if (apiToken) headers.set('Authorization', `Bearer ${apiToken}`)
   if (body instanceof JsonBody) headers.append('Content-Type', body.type)
@@ -67,7 +67,7 @@ export async function getEntity (entity) {
 export async function getProfile () {
   const response = await getFromApi(`/profile`)
   if (response.succeeded) return response.data
-  if (response.errorMessage === 'authentication failed') throw new AuthenticationError()
+  if (response.errorMessage.toLowerCase() === 'authentication failed') throw new AuthenticationError()
   throw new ServerError()
 }
 

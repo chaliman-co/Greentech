@@ -8,6 +8,12 @@ import AllCategories from '../pages/categories/AllCategories.vue'
 import SingleCategory from '../pages/categories/SingleCategory.vue'
 import ShowCategory from '../pages/categories/ShowCategory.vue'
 import UpdateCategory from '../pages/categories/UpdateCategory.vue'
+import AddProduct from '../pages/products/AddProduct.vue'
+import Products from '../pages/products/Products.vue'
+import AllProducts from '../pages/products/AllProducts.vue'
+import SingleProduct from '../pages/products/SingleProduct.vue'
+import showProduct from '../pages/products/showProduct.vue'
+import UpdateProduct from '../pages/products/UpdateProduct.vue'
 import store from '../store/store'
 import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError } from '../util'
 
@@ -79,6 +85,47 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/add_product',
+    component: AddProduct,
+    meta: {
+      privileges: ['admin'],
+      title: 'Add Product'
+    }
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: Products,
+    meta: {
+      title: 'Products'
+    },
+    children: [
+      {
+        path: '',
+        component: AllProducts
+      },
+      {
+        path: ':id',
+        component: SingleProduct,
+        children: [
+          {
+            path: 'update',
+            component: UpdateProduct,
+            meta: {
+              privileges: ['admin']
+            }
+          },
+          {
+            path: '',
+            component: showProduct,
+            meta: {
+            }
+          }
+        ]
+      }
+    ]
+  },
 
 ]
 
@@ -99,7 +146,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   setPageTitle(to.meta && to.meta.title)
-  next()
+  next();
 })
 function requiresAuthentication (route) {
   return route.meta && route.meta.privileges && (~route.meta.privileges.indexOf("authenticated") || ~route.meta.privileges.indexOf("admin"))

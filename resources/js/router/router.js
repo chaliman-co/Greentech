@@ -14,6 +14,7 @@ import AllProducts from '../pages/products/AllProducts.vue'
 import SingleProduct from '../pages/products/SingleProduct.vue'
 import showProduct from '../pages/products/showProduct.vue'
 import UpdateProduct from '../pages/products/UpdateProduct.vue'
+import NotFound from '../pages/404.vue'
 import store from '../store/store'
 import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError } from '../util'
 
@@ -125,7 +126,11 @@ const routes = [
         ]
       }
     ]
-  },
+  }, {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: NotFound
+  }
 
 ]
 
@@ -138,7 +143,6 @@ router.beforeEach(async (to, from, next) => {
     try {
       store.commit("set_profile", await getProfile())
     } catch (err) {
-      console.log(err)
       if (err instanceof AuthenticationError && requiresAuthentication(to)) return next("/login")
       if (err instanceof NetworkError) errorNotification("Error Communicating With The Server. Please try again")
       else if (err instanceof ServerError) errorNotification("Internal Server Error")
@@ -148,10 +152,10 @@ router.beforeEach(async (to, from, next) => {
   setPageTitle(to.meta && to.meta.title)
   next();
 })
-function requiresAuthentication (route) {
+function requiresAuthentication(route) {
   return route.meta && route.meta.privileges && (~route.meta.privileges.indexOf("authenticated") || ~route.meta.privileges.indexOf("admin"))
 }
-function profileIsSet () {
+function profileIsSet() {
   return store.state.profile
 }
 export default router

@@ -9,7 +9,7 @@ import Sidebar from "primevue/sidebar"
 import { deleteProfile } from '../util';
 import AdminSidebar from "./AdminSidebar.vue"
 import RegularSidebar from './RegularSidebar.vue';
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const store = useStore()
 const router = useRouter()
 const profile = computed(() => store.state.profile)
@@ -43,7 +43,7 @@ const toggle = (event) => {
 <template>
   <Sidebar v-model:visible="sidebarVisible">
           <div class="text-center" v-if="profile">
-            <img  :src="`${apiBaseUrl}${profile.imageUrl}`" class="sidebar-image" alt="">
+            <img  :src="`${apiBaseUrl}${profile.image_url}`" class="sidebar-image" alt="">
             <h2>
               <div>{{ profile.firstname }}</div>
               <div>{{profile.lastname}}</div>
@@ -58,7 +58,7 @@ const toggle = (event) => {
       <Button icon="pi pi-bars" @click="sidebarVisible = !sidebarVisible" class="menu-button"></Button>
     </template>
     <template #end>
-      <img v-if="profile" :src="`${apiBaseUrl}${profile.imageUrl}`" class="profile-pic right-cut" alt="">
+      <img v-if="profile" :src="`${apiBaseUrl}${profile.image_url}`" class="profile-pic right-cut" alt="">
       <router-link to="/login" v-if="!profile && route.name != 'Login'"><Button label="login"
           icon="pi pi-user pi-user-minus" class="menu-button"></Button></router-link>
       <div>

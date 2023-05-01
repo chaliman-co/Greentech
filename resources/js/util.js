@@ -198,7 +198,7 @@ export function handleErrors (response, redirectToLoginOnAuthFailure = true) {
   const details = {}
   for (const key of Object.keys(response.errorDetails)) {
     const properties = getErrorProperties(key) // a key can be a combination of multiple properties
-    for (const property of properties) { details[property] = response.errorDetails[key] }
+    for (const property of properties) { details[property] = response.errorDetails[key].join("\n") }
   }
   return details
 }

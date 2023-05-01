@@ -25,6 +25,9 @@ export default createStore({
       state.categories = state.categories.filter(cat => cat._id !== category._id)
       if (state.currentCategory._id === category._id) state.currentCategory = null
     },
+    set_current_category (state, category) {
+      state.currentCategory = category
+    },
   },
   getters: {
     loggedIn: state => state.profile !== null,

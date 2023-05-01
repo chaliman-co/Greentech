@@ -17,7 +17,13 @@ use App\Http\Controllers\{UserController, NotFoundController};
 
 Route::post("/users", [UserController::class, "createUser"]);
 Route::post("/auth", [UserController::class, "login"]);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    Route::get('/users/{user}', [UserController::class, "getUser"]);
+    Route::patch('/users/{user}', [UserController::class, "editUser"]);
+
+    Route::group(['middleware' => "ability:admin"], function () {
+	Route::get('/users', [UserController::class, "getAllUsers"]);
+    });
 });
 Route::any("{path}", [NotFoundController::class, "handle404"])->where("path", "(.*)");

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email_address')->unique();
             $table->json('phone_number');
             $table->string('password');
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
 	    $table->enum("role", ["admin", "regular"])->default("regular");
             $table->rememberToken();
             $table->timestamps();

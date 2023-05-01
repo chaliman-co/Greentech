@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use \App\Models\User;
+use \Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller {
+    private static $IMAGE_FOLDER = "/images/profile_pictures";
 
     public function createUser(Request $request)
     {
@@ -30,8 +32,8 @@ class UserController extends Controller {
 	$validatedData["password"] = password_hash($validatedData["password"], PASSWORD_DEFAULT);
 	if (array_key_exists("image", $validatedData))
 	{
-	    $validatedData["image"]->store("images/profile_pictures");
-	    $validatedData["image_url"] = "/images/profile_pictures/" . $validatedData["image"]->hashName();
+	    $fileName = $validatedData["image"]->store(UserController::$IMAGE_FOLDER, "public");
+	    $validatedData["image_url"] = Storage::url($fileName);
 	    unset($validatedData["image"]);
 	}
 	$user = User::create($validatedData);
@@ -63,5 +65,47 @@ class UserController extends Controller {
 	}
     }
 
+    function getAllUsers(Request $request)
+    {
+	return $this->success(User::all());
+    }
+    function getUser(Request $request, User $user)
+    {
+	if (! ($request->user()->role == "admin" || $request->user()->id == $user->id)) return $this->error([], "Authentication failed", 401);
+	return $this->success($user);
+    }
+    function editUser(Request $request, User $user) {
+	if ($request->user()->id != $user->id) return $this->error([], "Authentication failed", 401);
+	$validator = Validator::make($request->all(),
+			[
+			    'firstname' => ['string'],
+			    'lastname' => ['string'],
+			    'email_address' => ["unique:users", "email"],
+			    'country' => ['string', "min:1"],
+			    "password" => ["string", "min:4"],
+			    "phone_number" => ["", "array:digits,region"],
+			    "image" => ["file"]
+			]
+	);
+	if ($validator->fails())
+	{
+	    return $this->error($validator->errors());
+	}
+	$update = $validator->getData();
+	if (array_key_exists("firstname", $update)) $user->firstname = $update["firstname"];
+	if (array_key_exists("lastname", $update)) $user->lastname = $update["lastname"];
+	if (array_key_exists("country", $update)) $user->country = $update["country"];
+	if (array_key_exists("phone_number", $update)) $user->phone_number = $update["phone_number"];
+	if (array_key_exists("password", $update)) $user->password = $update["password"];
+	if (array_key_exists("email_address", $update)) $user->email_address = $update["email_address"];
+	if (array_key_exists("image", $update)) {
+	    Storage::disk("public")->delete(UserController::$IMAGE_FOLDER . "/" . basename($user->image_url));
+	    $fileName = $update["image"]->store(UserController::$IMAGE_FOLDER, "public");
+	    $user->image_url = Storage::url($fileName);
+	}
+	$user->save();
+	return $this->success($user, message: "User information was updated successfully");
+    
+    }
 
 }

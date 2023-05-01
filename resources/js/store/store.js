@@ -8,6 +8,9 @@ export default createStore({
       total: 0,
       data: []
     },
+    cart: [],
+    currentProduct: null,
+    currentCategory: null
   },
   mutations: {
     set_profile (state, profile) {
@@ -48,6 +51,12 @@ export default createStore({
     set_current_product (state, product) {
       state.currentProduct = product
     },
+    add_to_cart (state, cartItem) {
+      state.cart.push(cartItem)
+    },
+    remove_from_cart (state, product) {
+      state.cart = this.state.cart.filter(item => item.product._id !== product._id)
+    }
   },
   getters: {
     loggedIn: state => state.profile !== null,

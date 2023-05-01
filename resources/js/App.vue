@@ -1,4 +1,5 @@
 <script setup>
+import topbar from './components/topbar.vue'
 </script>
 
 <template>

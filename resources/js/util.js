@@ -64,11 +64,8 @@ export async function getEntity (entity) {
   }
   return response.getData()
 }
-export async function getProfile (token) {
-  if (!token) token = window.sessionStorage.getItem('api_token')
-  if (!token) throw new AuthenticationError()
-  const decoded = jwtDecode(token); console.log(decoded)
-  const response = await getFromApi(`/users/${decoded._id}`)
+export async function getProfile () {
+  const response = await getFromApi(`/profile`)
   if (response.succeeded) return response.data
   if (response.errorMessage === 'authentication failed') throw new AuthenticationError()
   throw new ServerError()
@@ -138,7 +135,7 @@ class ApiResponse {
   }
 
   get data () {
-    return this.apiResponse.result
+    return this.apiResponse.data
   }
 
   get failed () {

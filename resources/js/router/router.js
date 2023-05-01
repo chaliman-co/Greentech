@@ -2,6 +2,12 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "../pages/Home.vue"
 import Login from "../pages/Login.vue"
 import Signup from "../pages/Signup.vue"
+import Categories from '../pages/categories/Categories.vue'
+import AddCategory from '../pages/categories/AddCategory.vue'
+import AllCategories from '../pages/categories/AllCategories.vue'
+import SingleCategory from '../pages/categories/SingleCategory.vue'
+import ShowCategory from '../pages/categories/ShowCategory.vue'
+import UpdateCategory from '../pages/categories/UpdateCategory.vue'
 import store from '../store/store'
 import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError } from '../util'
 
@@ -27,6 +33,51 @@ const routes = [
     meta: {
       title: "Create Account"
     }
+  },
+  {
+    path: '/add_category',
+    component: AddCategory,
+    meta: {
+      privileges: ['admin'],
+      title: 'Add Category'
+    }
+  },
+  {
+    path: '/categories',
+    component: Categories,
+    meta: {
+      privileges: ['admin'],
+      title: 'Categories'
+    },
+    children: [
+      {
+        path: '',
+        component: AllCategories,
+        meta: {
+          privileges: ['admin']
+        }
+      },
+      {
+        path: ':id',
+        component: SingleCategory,
+        children: [
+          {
+            path: '',
+            component: ShowCategory,
+            meta: {
+              privileges: ['admin']
+            }
+          },
+          {
+            path: 'update',
+            component: UpdateCategory,
+            meta: {
+              privileges: ['admin']
+            }
+          }
+        ]
+      }
+    ]
   },
 
 ]

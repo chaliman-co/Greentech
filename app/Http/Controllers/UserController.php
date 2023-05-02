@@ -71,11 +71,11 @@ class UserController extends Controller {
     }
     function getUser(Request $request, User $user)
     {
-	if (! ($request->user()->role == "admin" || $request->user()->id == $user->id)) return $this->error([], "Authentication failed", 401);
+	if (! ($request->user()->role == "admin" || $request->user()->id == $user->id)) return $this->error([], "Access denied", 401);
 	return $this->success($user);
     }
     function editUser(Request $request, User $user) {
-	if ($request->user()->id != $user->id) return $this->error([], "Authentication failed", 401);
+	if ($request->user()->id != $user->id) return $this->error([], "Authorization failed", 401);
 	$validator = Validator::make($request->all(),
 			[
 			    'firstname' => ['string'],

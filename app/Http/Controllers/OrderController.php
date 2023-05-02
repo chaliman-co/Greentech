@@ -34,14 +34,14 @@ class OrderController extends Controller {
 	    ];
 	}
 	OrderItem::insert($orderItems);
-	return $this->success($order);
+	return $this->success(Order::where("id", $order->id)->first());
     }
 
     function getOrders(Request $request)
     {
 	$validator = Validator::make($request->all(),
 			[
-			    'user_id' => ["integer", "exist:users,id"],
+			    'user_id' => ["integer", "exists:users,id"],
 			    'skip' => ["integer", "min:0"],
 			    'limit' => ['integer', "min:0", "max:50"],
 			]

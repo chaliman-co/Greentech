@@ -36,7 +36,7 @@ class Handler extends ExceptionHandler
 	$this->renderable(function (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e, $request) {
 	    if ($request->is('api/*'))
 	    {
-		return (new Controller())->error([], "Authentication failed", 401);
+		return (new Controller())->error([], "Access denied", 401);
 	    }
 	});
 	$this->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {

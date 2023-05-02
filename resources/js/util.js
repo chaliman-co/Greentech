@@ -67,6 +67,7 @@ export async function getEntity (entity) {
   return response.getData()
 }
 export async function getProfile () {
+  if (! window.sessionStorage.getItem('api_token')) throw new AuthenticationError()
   const response = await getFromApi(`/profile`)
   if (response.succeeded) return response.data
   if (response.errorMessage.toLowerCase() === 'authentication failed') throw new AuthenticationError()

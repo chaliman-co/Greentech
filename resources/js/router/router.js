@@ -14,6 +14,7 @@ import AllProducts from '../pages/products/AllProducts.vue'
 import SingleProduct from '../pages/products/SingleProduct.vue'
 import showProduct from '../pages/products/showProduct.vue'
 import UpdateProduct from '../pages/products/UpdateProduct.vue'
+import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
 import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError } from '../util'
@@ -126,6 +127,15 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: '/checkout',
+    component: Checkout,
+    name: 'Checkout',
+    meta: {
+      privileges: ['authenticated'],
+      title: 'Checkout'
+    }
   }, {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

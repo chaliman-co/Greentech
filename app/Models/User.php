@@ -11,9 +11,6 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    function kil() {
-	$this->createToken("abrakada");
-    }
     /**
      * The attributes that are mass assignable.
      *
@@ -40,4 +37,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
 	'phone_number' => 'array'
     ];
+    
+   
+        protected function isAdmin(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn () =>  $this->role == "admin"
+        );
+    }
 }

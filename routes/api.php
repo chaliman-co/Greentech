@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     UserController,
     NotFoundController,
     CategoryController,
-    ProductController
+    ProductController,
+    OrderController
 };
 
 /*
@@ -32,6 +33,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/users/{user}', [UserController::class, "getUser"]);
     Route::get('/profile', [UserController::class, "getProfile"]);
     Route::patch('/users/{user}', [UserController::class, "editUser"]);
+    Route::post('/orders', [OrderController::class, "placeOrder"]);
+    Route::get('/orders', [OrderController::class, "getOrders"]);
+    Route::patch('/orders/{order}', [OrderController::class, "editOrder"]);
 
     Route::group(['middleware' => "ability:admin"], function () {
 	Route::get('/users', [UserController::class, "getAllUsers"]);

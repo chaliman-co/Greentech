@@ -2,6 +2,11 @@
 <template>
   <div class="card">
     <Accordion :multiple="true" class="w-full">
+      <AccordionTab header="Profile">
+        <router-link to="/profile">
+          <Button label="View My Profile" icon="pi pi-building" class="menu-button"></Button>
+        </router-link>
+      </AccordionTab>
       <AccordionTab header="Users">
         <router-link to="/users"><Button label="View All" icon="pi pi-user" class="menu-button"></Button></router-link>
       </AccordionTab>

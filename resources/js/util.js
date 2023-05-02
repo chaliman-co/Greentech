@@ -1,6 +1,7 @@
 
 import router from './router/router'
 import store from './store/store'
+import Libphonenumber from 'google-libphonenumber';
 const API_URL = import.meta.env.VITE_API_URL
 export async function getFromApi (path) {
   const headers = new Headers({"Accept": "application/json"})
@@ -214,3 +215,8 @@ export function setPageTitle (title) {
 export function formatCurrency (value) {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
+
+const phoneUtil = Libphonenumber.PhoneNumberUtil.getInstance();
+export function formatPhoneNumber(number) {
+  return phoneUtil.format(phoneUtil.parse(String(number.digits), number.region), Libphonenumber.PhoneNumberFormat.INTERNATIONAL)
+}

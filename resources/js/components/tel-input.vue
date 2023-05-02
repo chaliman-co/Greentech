@@ -86,7 +86,11 @@ export default {
             this.onChange()
         },
     },
-    created() {
+    mounted() {
+        if (this.value) {
+            this.selectedCountry = this.countries.find(country => country.code.toLowerCase() == this.value.region.toLowerCase());;
+            this.rawInput = this.value.digits;
+        } else
         fetch('https://ipinfo.io/json')
             .then(response => response.json())
             .then((data) => {

@@ -23,6 +23,9 @@ import AdminAllOrders from '../pages/admin/orders/AllOrders.vue'
 import AdminSingleOrder from '../pages/admin/orders/SingleOrder.vue'
 import AdminshowOrder from '../pages/admin/orders/ShowOrder.vue'
 import AllUsers from '../pages/users/AllUsers.vue'
+import Profile from '../pages/profile/Profile.vue'
+import ShowProfile from '../pages/profile/ShowProfile.vue'
+import EditProfile from '../pages/profile/EditProfile.vue'
 import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
@@ -206,7 +209,26 @@ const routes = [
       privileges: ['admin'],
       title: 'Users'
     }
-  }, {
+  },{
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      title: 'Profile',
+      privileges: ['authenticated'],
+    },
+    children: [
+      {
+        path: '',
+        component: ShowProfile
+      },
+      {
+        path: 'edit',
+        component: EditProfile,
+      }
+    ]
+  },
+   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound

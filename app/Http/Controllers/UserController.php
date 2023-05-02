@@ -9,6 +9,7 @@ use \App\Models\User;
 use \Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller {
+
     private static $IMAGE_FOLDER = "/images/profile_pictures";
 
     public function createUser(Request $request)
@@ -67,15 +68,36 @@ class UserController extends Controller {
 
     function getAllUsers(Request $request)
     {
-	return $this->success(User::all());
+	$validator = Validator::make($request->all(),
+			[
+			    'user_id' => ["integer", "exists:users,id"],
+			    'skip' => ["integer", "min:0"],
+			    'limit' => ['integer', "min:0", "max:50"],
+			]
+	);
+	if ($validator->fails())
+	{
+	    return $this->error($validator->errors());
+	}
+	$validatedData = $validator->getData();
+	$skip = array_key_exists("skip", $validatedData) ? $validatedData["skip"] : 0;
+	$limit = array_key_exists("limit", $validatedData) ? $validatedData["limit"] : 50;
+	$total = User::count();
+	$users = User::skip($skip)->limit($limit)->get();
+	return $this->success(["limit" => $limit, "skip" => $skip, "total" => $total, "data" => $users]);
     }
+
     function getUser(Request $request, User $user)
     {
-	if (! ($request->user()->role == "admin" || $request->user()->id == $user->id)) return $this->error([], "Access denied", 401);
+	if (!($request->user()->role == "admin" || $request->user()->id == $user->id))
+	    return $this->error([], "Access denied", 401);
 	return $this->success($user);
     }
-    function editUser(Request $request, User $user) {
-	if ($request->user()->id != $user->id) return $this->error([], "Authorization failed", 401);
+
+    function editUser(Request $request, User $user)
+    {
+	if ($request->user()->id != $user->id)
+	    return $this->error([], "Authorization failed", 401);
 	$validator = Validator::make($request->all(),
 			[
 			    'firstname' => ['string'],
@@ -92,13 +114,20 @@ class UserController extends Controller {
 	    return $this->error($validator->errors());
 	}
 	$update = $validator->getData();
-	if (array_key_exists("firstname", $update)) $user->firstname = $update["firstname"];
-	if (array_key_exists("lastname", $update)) $user->lastname = $update["lastname"];
-	if (array_key_exists("country", $update)) $user->country = $update["country"];
-	if (array_key_exists("phone_number", $update)) $user->phone_number = $update["phone_number"];
-	if (array_key_exists("password", $update)) $user->password = $update["password"];
-	if (array_key_exists("email_address", $update)) $user->email_address = $update["email_address"];
-	if (array_key_exists("image", $update)) {
+	if (array_key_exists("firstname", $update))
+	    $user->firstname = $update["firstname"];
+	if (array_key_exists("lastname", $update))
+	    $user->lastname = $update["lastname"];
+	if (array_key_exists("country", $update))
+	    $user->country = $update["country"];
+	if (array_key_exists("phone_number", $update))
+	    $user->phone_number = $update["phone_number"];
+	if (array_key_exists("password", $update))
+	    $user->password = $update["password"];
+	if (array_key_exists("email_address", $update))
+	    $user->email_address = $update["email_address"];
+	if (array_key_exists("image", $update))
+	{
 	    Storage::disk("public")->delete(UserController::$IMAGE_FOLDER . "/" . basename($user->image_url));
 	    $fileName = $update["image"]->store(UserController::$IMAGE_FOLDER, "public");
 	    $user->image_url = Storage::url($fileName);
@@ -106,7 +135,9 @@ class UserController extends Controller {
 	$user->save();
 	return $this->success($user, message: "User information was updated successfully");
     }
-    public function getProfile(Request $request) {
+
+    public function getProfile(Request $request)
+    {
 	return $this->success($request->user());
     }
 

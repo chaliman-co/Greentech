@@ -69,6 +69,12 @@ class OrderController extends Controller {
 	}
 	return $this->success(["limit" => $limit, "skip" => $skip, "total" => $total, "data" => $orders]);
     }
+    
+    function getOrder(Request $request, Order $order)
+    {
+	if (! ($request->user()->isAdmin || $request->user()->id == $order->user_id)) return $this->error([], "Access denied", 401);
+	return $this->success($order);
+    }
 
     function editOrder(Request $request, Order $order)
     {

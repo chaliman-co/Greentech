@@ -211,3 +211,6 @@ export function setPageTitle (title) {
   if (title) document.title = `${title} | Green Tech Assessment`
   else document.title = 'Green Tech Assessment'
 }
+export function formatCurrency (value) {
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};

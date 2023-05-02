@@ -79,7 +79,8 @@ async function placeOrder(event) {
       errors.value = handleErrors(response, false);
     } else {
       store.commit("clear_cart")
-      successNotification(`Order was placed successfully`);
+      successNotification(`Order was placed successfully`)
+      if (store.state.ownOrders.total > 0) store.commit("add_own_order", response.data)
       router.push("/orders")
     }
   } catch (err) {
@@ -89,7 +90,7 @@ async function placeOrder(event) {
   }
 }
 </script>
-<style>
+<style scoped>
 .p-datatable-table {
   margin: auto;
   min-width: 60% !important;

@@ -20,7 +20,7 @@ const product = computed(() => store.state.currentProduct)
 const loading = ref(false)
 onMounted(async () => {
   if (!product.value || product.value.id !== route.params.id) {
-    const productFromStore = store.state.products.data.find(prod => prod.id === route.params.id)
+    const productFromStore = store.state.products.data.find(prod => prod.id === Number(route.params.id))
     if (productFromStore) store.commit("set_current_product", productFromStore)
     else try {
       const response = await getFromApi(`/products/${route.params.id}`);

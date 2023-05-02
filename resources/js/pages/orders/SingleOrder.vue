@@ -1,11 +1,12 @@
 <template>
-  <div v-if="!category" class="m-auto mt-3 sm:w-full md:w-8">
+  <div v-if="!order" class="m-auto mt-3 sm:w-full md:w-8">
     <Skeleton class="mb-2" borderRadius="16px"></Skeleton>
     <Skeleton width="10rem" class="mb-2" borderRadius="16px"></Skeleton>
     <Skeleton width="5rem" borderRadius="16px" class="mb-2"></Skeleton>
     <Skeleton height="2rem" class="mb-2" borderRadius="16px"></Skeleton>
+    <Skeleton width="10rem" height="4rem" borderRadius="16px"></Skeleton>
   </div>
-  <router-view v-if="category"></router-view>
+  <router-view v-if="order"></router-view>
 </template>
 <script setup>
 import Skeleton from "primevue/skeleton"
@@ -15,20 +16,22 @@ import { useRoute } from "vue-router"
 import { errorNotification, getFromApi, handleErrors } from '../../util';
 const route = useRoute()
 const store = useStore()
-const category = computed(() => store.state.currentCategory)
+const order = computed(() => store.state.currentOwnOrder)
+const loading = ref(false)
 onMounted(async () => {
-  if (!category.value || category.value._id !== route.params.id) {
-    const categoryFromStore = store.state.categories.find(prod => prod._id === Number(route.params.id))
-    if (categoryFromStore) store.commit("set_current_category", categoryFromStore)
-    else try {
-      const response = await getFromApi(`/categories/${route.params.id}`);
+  if (!order.value || order.value.id !== route.params.id) {
+    const orderFromStore = store.state.ownOrders.data.find(order => order.id === Number(route.params.id))
+    if (orderFromStore) store.commit("set_current_own_order", orderFromStore)
+    else try {alert("not found")
+      const response = await getFromApi(`/orders/${route.params.id}`);
       if (response.failed) handleErrors(response)
       else {
-        store.commit("set_current_category", response.data)
+        store.commit("set_current_own_order", response.data)
       }
     } catch (err) {
       errorNotification("Network Error. Refresh to reload data")
-    } 
+    }
+    loading.value = false;
   }
 
 })
@@ -55,11 +58,5 @@ th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
-}
-
-@media screen and (min-width: 1000px) {
-  table {
-    max-width: 70%;
-  }
 }
 </style>

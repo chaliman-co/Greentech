@@ -21,6 +21,11 @@
           <Button label="Add New Category" icon="pi pi-plus" class="menu-button"></Button>
         </router-link>
       </AccordionTab>
+      <AccordionTab header="Orders">
+        <router-link to="/orders">
+          <Button label="View My Orders" icon="pi pi-building" class="menu-button"></Button>
+        </router-link>
+      </AccordionTab>
     </Accordion>
     <router-link to="/Checkout">
       <Button label="Checkout" class="menu-button mt-5"></Button>

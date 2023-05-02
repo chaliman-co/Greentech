@@ -14,6 +14,10 @@ import AllProducts from '../pages/products/AllProducts.vue'
 import SingleProduct from '../pages/products/SingleProduct.vue'
 import showProduct from '../pages/products/showProduct.vue'
 import UpdateProduct from '../pages/products/UpdateProduct.vue'
+import Orders from '../pages/orders/Orders.vue'
+import AllOrders from '../pages/orders/AllOrders.vue'
+import SingleOrder from '../pages/orders/SingleOrder.vue'
+import showOrder from '../pages/orders/showOrder.vue'
 import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
@@ -121,6 +125,32 @@ const routes = [
           {
             path: '',
             component: showProduct,
+            meta: {
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders,
+    meta: {
+      title: 'Orders'
+    },
+    children: [
+      {
+        path: '',
+        component: AllOrders
+      },
+      {
+        path: ':id',
+        component: SingleOrder,
+        children: [
+          {
+            path: '',
+            component: showOrder,
             meta: {
             }
           }

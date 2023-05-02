@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::patch('/users/{user}', [UserController::class, "editUser"]);
     Route::post('/orders', [OrderController::class, "placeOrder"]);
     Route::get('/orders', [OrderController::class, "getOrders"]);
+    Route::get('/orders/{order}', [OrderController::class, "getOrder"]);
     Route::patch('/orders/{order}', [OrderController::class, "editOrder"]);
 
     Route::group(['middleware' => "ability:admin"], function () {

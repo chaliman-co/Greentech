@@ -24,7 +24,8 @@ export default createStore({
     currentOwnOrder: null,
     cart: localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [],
     currentProduct: null,
-    currentCategory: null
+    currentCategory: null,
+    currentUser: null
   },
   mutations: {
     set_profile(state, profile) {
@@ -101,6 +102,9 @@ export default createStore({
     update_order(state, { order, update }) {
       Object.assign(order, update)
     },
+    set_current_user(state, user) {
+      state.currentUser = user
+    }
   },
   getters: {
     loggedIn: state => state.profile !== null,

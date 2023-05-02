@@ -33,6 +33,9 @@
     </Column>
   </DataTable>
   <DataTable  v-if="!loading && users.data.length > 0"
+    @row-select="router.push(`/users/${$event.data.id}`)"
+    selectionMode="single" 
+    dataKey="id"
     :value="users.data" >
     <template #header>
       <div class="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -50,8 +53,12 @@
       </template>
     </Column>
     <Column field="country" header="Country"></Column>
-    <Column field="phoneNumber.digits" header="Phone Number"></Column>
-    <Column field="emailAddress" header="Email Address"></Column>
+    <Column header="Phone Number">
+      <template #body="slotProps">
+        {{formatPhoneNumber(slotProps.data.phone_number)}}
+      </template>
+    </Column>
+    <Column field="email_address" header="Email Address"></Column>
     <template #footer> In total there are {{ users.total }} users. </template>
   </DataTable>
   <div v-if="!loading && !users.data.length" class="text-center text-3xl font-bold">No users found.</div>
@@ -63,10 +70,12 @@ import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import Skeleton from "primevue/skeleton"
 import { useStore } from 'vuex';
-import { errorNotification, getFromApi, handleErrors } from '../../util';
+import { useRouter } from 'vue-router';
+import { errorNotification, getFromApi, handleErrors, formatPhoneNumber } from '../../util';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 const store = useStore()
+const router = useRouter()
 const users = computed(() => store.state.users)
 const loading = ref(true)
 const skeletonUsers = [];

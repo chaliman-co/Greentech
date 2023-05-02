@@ -22,7 +22,10 @@ import AdminOrders from '../pages/admin/orders/Orders.vue'
 import AdminAllOrders from '../pages/admin/orders/AllOrders.vue'
 import AdminSingleOrder from '../pages/admin/orders/SingleOrder.vue'
 import AdminshowOrder from '../pages/admin/orders/ShowOrder.vue'
+import Users from "../pages/users/User.vue"
 import AllUsers from '../pages/users/AllUsers.vue'
+import SingleUser from '../pages/users/SingleUser.vue'
+import ShowUser from '../pages/users/ShowUser.vue'
 import Profile from '../pages/profile/Profile.vue'
 import ShowProfile from '../pages/profile/ShowProfile.vue'
 import EditProfile from '../pages/profile/EditProfile.vue'
@@ -201,14 +204,31 @@ const routes = [
       privileges: ['authenticated'],
       title: 'Checkout'
     }
-  },
-  {
+  }, {
     path: '/users',
-    component: AllUsers,
+    name: 'Users',
+    component: Users,
     meta: {
-      privileges: ['admin'],
       title: 'Users'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: AllUsers
+      },
+      {
+        path: ':id',
+        component: SingleUser,
+        children: [
+          {
+            path: '',
+            component: ShowUser,
+            meta: {
+            }
+          }
+        ]
+      }
+    ]
   },{
     path: '/profile',
     name: 'Profile',

@@ -8,6 +8,10 @@ export default createStore({
       total: 0,
       data: []
     },
+    users: {
+      total: 0,
+      data: []
+    },
     ownOrders: {
       total: 0,
       data: []
@@ -25,6 +29,9 @@ export default createStore({
   mutations: {
     set_profile(state, profile) {
       state.profile = profile
+    },
+    set_users (state, users) {
+      state.users = users
     },
     delete_profile(state) {
       state.profile = null

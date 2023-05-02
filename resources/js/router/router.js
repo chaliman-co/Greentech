@@ -22,6 +22,7 @@ import AdminOrders from '../pages/admin/orders/Orders.vue'
 import AdminAllOrders from '../pages/admin/orders/AllOrders.vue'
 import AdminSingleOrder from '../pages/admin/orders/SingleOrder.vue'
 import AdminshowOrder from '../pages/admin/orders/ShowOrder.vue'
+import AllUsers from '../pages/users/AllUsers.vue'
 import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
@@ -196,6 +197,14 @@ const routes = [
     meta: {
       privileges: ['authenticated'],
       title: 'Checkout'
+    }
+  },
+  {
+    path: '/users',
+    component: AllUsers,
+    meta: {
+      privileges: ['admin'],
+      title: 'Users'
     }
   }, {
     path: '/:pathMatch(.*)*',

@@ -18,7 +18,7 @@
           </tr>
           <tr>
             <th>Price:</th>
-            <td>{{product.price}}</td>
+            <td>{{formatCurrency(product.price)}}</td>
           </tr>
         </tbody>
       </table>
@@ -39,7 +39,7 @@ import { useStore } from "vuex"
 import { useRoute, useRouter } from "vue-router"
 import Card from "primevue/card"
 import Button from "primevue/button";
-import { errorNotification, successNotification } from '../../util';
+import { errorNotification, formatCurrency, successNotification } from '../../util';
 
 const route = useRoute()
 const router = useRouter()

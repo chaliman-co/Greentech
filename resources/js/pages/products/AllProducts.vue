@@ -53,7 +53,7 @@ import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import Skeleton from "primevue/skeleton"
 import { useStore } from 'vuex';
-import { errorNotification, getFromApi, handleErrors } from '../../util';
+import { errorNotification, getFromApi, handleErrors, formatCurrency } from '../../util';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 const router = useRouter()
@@ -79,11 +79,6 @@ onMounted(async () => {
   loading.value = false
 
 });
-
-const formatCurrency = (value) => {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-};
-
 </script>
 <style>
 .p-datatable-table {

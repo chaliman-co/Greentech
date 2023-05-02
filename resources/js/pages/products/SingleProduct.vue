@@ -22,7 +22,7 @@ onMounted(async () => {
   if (!product.value || product.value.id !== route.params.id) {
     const productFromStore = store.state.products.data.find(prod => prod.id === route.params.id)
     if (productFromStore) store.commit("set_current_product", productFromStore)
-    try {
+    else try {
       const response = await getFromApi(`/products/${route.params.id}`);
       if (response.failed) handleErrors(response)
       else {
@@ -36,7 +36,7 @@ onMounted(async () => {
 
 })
 </script>
-<style>
+<style scoped>
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;

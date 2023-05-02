@@ -30,6 +30,9 @@
         <router-link to="/orders">
           <Button label="View My Orders" icon="pi pi-building" class="menu-button"></Button>
         </router-link>
+        <router-link to="/admin/orders">
+          <Button label="View All Orders" icon="pi pi-building" class="menu-button"></Button>
+        </router-link>
       </AccordionTab>
     </Accordion>
     <router-link to="/Checkout">

@@ -261,6 +261,8 @@ const router = createRouter({
   routes
 })
 router.beforeEach(async (to, from, next) => {
+  const loader = document.getElementById("loader")
+  loader.classList.add("not-loaded")
   if (!profileIsSet()) {
     try {
       store.commit("set_profile", await getProfile())
@@ -272,6 +274,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   setPageTitle(to.meta && to.meta.title)
+  loader.classList.remove("not-loaded")
   next();
 })
 function requiresAuthentication(route) {

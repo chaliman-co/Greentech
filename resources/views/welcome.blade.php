@@ -5,6 +5,7 @@
         @vite('resources/css/toast.css')
 </head>
 <body>
+  <div id="loader" class="not-loaded"></div>
     <div>
       <div id="toast">
         <div class="toast-content">

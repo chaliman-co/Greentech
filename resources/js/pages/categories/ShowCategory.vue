@@ -36,3 +36,31 @@ const category = computed(() => store.state.currentCategory)
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 const isAdmin = computed(() => store.state.profile && store.state.profile.role === 'admin')
 </script>
+<style scoped>
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 85%;
+    margin:auto;
+  }
+  .order-row {
+    cursor: pointer;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  @media screen and (min-width: 1000px) {
+    table {
+        max-width: 70%;
+    }
+  }
+</style>

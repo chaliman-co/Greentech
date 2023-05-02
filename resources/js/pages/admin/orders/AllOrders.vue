@@ -27,7 +27,7 @@
       </template>
     </Column>
   </DataTable>
-  <DataTable @row-select="router.push(`/orders/${$event.data.id}`)" v-if="!loading && orders.data.length > 0"
+  <DataTable @row-select="router.push(`/admin/orders/${$event.data.id}`)" v-if="!loading && orders.data.length > 0"
     :value="orders.data" selectionMode="single" dataKey="id">
     <template #header>
       <div class="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -68,22 +68,22 @@ import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import Skeleton from "primevue/skeleton"
 import { useStore } from 'vuex';
-import { errorNotification, getFromApi, handleErrors, formatCurrency } from '../../util';
+import { errorNotification, getFromApi, handleErrors, formatCurrency } from '../../../util';
 
 const router = useRouter()
 const store = useStore()
 const profile = computed(() => store.state.profile)
-const orders = computed(() => store.state.ownOrders)
+const orders = computed(() => store.state.orders)
 const loading = ref(true)
 const skeletonOrders = [];
 for (let i = 0; i < 5; i++) skeletonOrders.push({})
 onMounted(async () => {
   if (!orders.value.total) {
     try {
-      const response = await getFromApi(`/orders?user_id=${profile.value.id}`);
+      const response = await getFromApi(`/orders`);
       if (response.failed) handleErrors(response)
       else {
-        store.commit("set_own_orders", response.data)
+        store.commit("set_orders", response.data)
       }
     } catch (err) {
       errorNotification("Network Error. Refresh to reload data")

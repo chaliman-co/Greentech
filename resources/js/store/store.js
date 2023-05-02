@@ -12,6 +12,11 @@ export default createStore({
       total: 0,
       data: []
     },
+    orders: {
+      total: 0,
+      data: []
+    },
+    currentOrder: null,
     currentOwnOrder: null,
     cart: localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [],
     currentProduct: null,
@@ -76,6 +81,15 @@ export default createStore({
     },
     set_current_own_order(state, order) {
       state.currentOwnOrder = order;
+    },
+    set_orders(state, orders) {
+      state.orders = orders
+    },
+    add_order(state, order) {
+      state.orders.push(order)
+    },
+    set_current_order(state, order) {
+      state.currentOrder = order;
     },
     update_order(state, { order, update }) {
       Object.assign(order, update)

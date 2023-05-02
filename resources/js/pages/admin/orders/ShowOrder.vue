@@ -46,15 +46,16 @@
   </DataTable>
     </template>
     <template #footer>
-      <div class="flex justify-content-around">
-  <Button v-if="order.status == 'pending'" @click="cancel()" :loading="loading" :label="loading? 'Cancelling' : 'Cancel'" style="background-color: var(--red-700);" title="Cancel this order" ></Button>
+      <div class="flex justify-content-center">
+        <Dropdown v-model="selectedStatus" :options="statusOptions"  placeholder="Select status" class="mr-3" style="width:200px" />
+        <Button @click="update()" :loading="loading" :label="loading? 'Updating' : 'Update'"  title="Update" ></Button>
       </div>
 
     </template>
   </Card>
 </template>
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from "vuex"
 import { useRoute, useRouter } from "vue-router"
 import Card from "primevue/card"
@@ -63,19 +64,27 @@ import Column from "primevue/column"
 import ColumnGroup from "primevue/columngroup"
 import Button from "primevue/button"
 import Row from "primevue/row"
-import { errorNotification, formatCurrency, successNotification, updateAtApi, handleErrors, JsonBody } from '../../util';
+import Dropdown from "primevue/dropdown";
+import { errorNotification, formatCurrency, successNotification, updateAtApi, handleErrors, JsonBody } from '../../../util';
 
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
-const order = computed(() => store.state.currentOwnOrder)
+const order = computed(() => store.state.currentOrder)
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 const loading = ref()
-
-async function cancel() {
+const selectedStatus = ref()
+const statusOptions = ref([
+    'pending',
+    'processing', 
+   'delivered',
+    'declined'
+]);
+onMounted(() => selectedStatus.value = order.value.status)
+async function update() {
   loading.value = true;
   const data = {
-    status: "cancelled"
+    status: selectedStatus.value
   }
   try {
     let response = await updateAtApi(
@@ -83,7 +92,7 @@ async function cancel() {
       new JsonBody(data)
     );
     if (response.failed) {
-      handleErrors(response, false);
+      errorNotification(response.errorDetails.status[0])
     } else {
       store.commit("update_order", {order: order.value, update: response.data})
       successNotification(`Order was cancelled successfully`);

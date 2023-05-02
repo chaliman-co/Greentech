@@ -18,6 +18,10 @@ import Orders from '../pages/orders/Orders.vue'
 import AllOrders from '../pages/orders/AllOrders.vue'
 import SingleOrder from '../pages/orders/SingleOrder.vue'
 import showOrder from '../pages/orders/ShowOrder.vue'
+import AdminOrders from '../pages/admin/orders/Orders.vue'
+import AdminAllOrders from '../pages/admin/orders/AllOrders.vue'
+import AdminSingleOrder from '../pages/admin/orders/SingleOrder.vue'
+import AdminshowOrder from '../pages/admin/orders/ShowOrder.vue'
 import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
@@ -151,6 +155,33 @@ const routes = [
           {
             path: '',
             component: showOrder,
+            meta: {
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/admin/orders',
+    name: 'AdminOrders',
+    component: AdminOrders,
+    meta: {
+      title: 'Manage Orders',
+      privileges: ['admin'],
+    },
+    children: [
+      {
+        path: '',
+        component: AdminAllOrders
+      },
+      {
+        path: ':id',
+        component: AdminSingleOrder,
+        children: [
+          {
+            path: '',
+            component: AdminshowOrder,
             meta: {
             }
           }

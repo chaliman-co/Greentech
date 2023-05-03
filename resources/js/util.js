@@ -196,7 +196,7 @@ export function handleErrors (response, redirectToLoginOnAuthFailure = true) {
   showNotification(response.errorMessage, 'error')
   if (response.status === 401 && redirectToLoginOnAuthFailure) {
     deleteProfile()
-    return redirect({ name: 'Account', query: { errormessage: 'You must login in to continue', destination: window.location.pathname } })
+    return redirect({ name: 'Login', query: { errormessage: 'You must login in to continue', destination: window.location.pathname } })
   }
   const details = {}
   for (const key of Object.keys(response.errorDetails)) {

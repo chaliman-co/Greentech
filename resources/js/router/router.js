@@ -229,7 +229,7 @@ const routes = [
         ]
       }
     ]
-  },{
+  }, {
     path: '/profile',
     name: 'Profile',
     component: Profile,
@@ -248,7 +248,7 @@ const routes = [
       }
     ]
   },
-   {
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound
@@ -260,22 +260,25 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
+  console.log(to.fullPath, to.meta)
   const loader = document.getElementById("loader")
   loader.classList.add("not-loaded")
   if (!profileIsSet()) {
     try {
       store.commit("set_profile", await getProfile())
     } catch (err) {
-      if (err instanceof AuthenticationError && requiresAuthentication(to)) return next("/login")
-      if (err instanceof NetworkError) errorNotification("Error Communicating With The Server. Please try again")
+      console.log({ err, reqAuth: requiresAuthentication(to), shouldLogin: err instanceof AuthenticationError && requiresAuthentication(to) })
+      if (err instanceof AuthenticationError && requiresAuthentication(to)) return {name: "Login", replace: true}
+      if (err instanceof NetworkError) errorNotification("Error Communicating With The Server. Please refresh to try again")
       else if (err instanceof ServerError) errorNotification("Internal Server Error")
       if (requiresAuthentication(to)) return next(err)
+    } finally {
+      loader.classList.remove("not-loaded")
     }
   }
   setPageTitle(to.meta && to.meta.title)
   loader.classList.remove("not-loaded")
-  next();
 })
 function requiresAuthentication(route) {
   return route.meta && route.meta.privileges && (~route.meta.privileges.indexOf("authenticated") || ~route.meta.privileges.indexOf("admin"))

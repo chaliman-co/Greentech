@@ -36,6 +36,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex"
+import { useRouter } from "vue-router";
 import InputText from "primevue/inputtext"
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
@@ -102,7 +103,7 @@ async function submit(event) {
     } else {
       store.commit("delete_product", product.value)
       successNotification(`Product was deleted successfully`);
-      redirect("/products", 5000)
+      redirect("/products", router, 5000)
     }
   } catch (err) {
     errorNotification("Network Error");

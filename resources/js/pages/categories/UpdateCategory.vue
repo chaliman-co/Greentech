@@ -23,6 +23,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button";
 import { updateAtApi, errorNotification, successNotification, handleErrors, getFromApi, JsonBody, redirect, deleteFromApi } from "@/util";
@@ -30,6 +31,7 @@ import { updateAtApi, errorNotification, successNotification, handleErrors, getF
 const loading = ref(false)
 const errors = ref({})
 const store = useStore();
+const router = useRouter()
 const category = computed(() => store.state.currentCategory)
 const name = ref(category.value.name)
 
@@ -65,7 +67,7 @@ async function deleteCategory() {
     } else {
       store.commit("delete_category", category.value)
       successNotification(`Category was deleted successfully`);
-      redirect("/categories", 5000)
+      redirect("/categories", router, 5000)
     }
   } catch (err) {
     errorNotification("Network Error");

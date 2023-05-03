@@ -63,7 +63,7 @@
 <script setup>
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
-import {  errorNotification, successNotification, handleErrors, FormDataBody, redirect, updateAtApi } from "@/util";
+import {  errorNotification, successNotification, handleErrors, FormDataBody, updateAtApi } from "@/util";
 import { ref, computed } from "vue";
 import {useStore} from "vuex"
 import telInput from "@/components/tel-input.vue";

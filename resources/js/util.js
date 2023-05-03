@@ -1,5 +1,3 @@
-
-import router from './router/router'
 import store from './store/store'
 import Libphonenumber from 'google-libphonenumber';
 const API_URL = import.meta.env.VITE_API_URL
@@ -78,7 +76,7 @@ export function deleteProfile () {
   store.commit('delete_profile')
   window.sessionStorage.removeItem('api_token')
 }
-export function redirect (destination, delay = 5000) {
+export function redirect (destination, router, delay = 5000) {
   setTimeout(() => router.push(destination), delay)
 }
 
@@ -192,9 +190,9 @@ export function startProcessingAnimation () {
 export function stopProcessingAnimation () {
   document.getElementById('processing-loader').classList.add('hidden')
 }
-export function handleErrors (response, redirectToLoginOnAuthFailure = true) {
+export function handleErrors (response, router) {
   showNotification(response.errorMessage, 'error')
-  if (response.status === 401 && redirectToLoginOnAuthFailure) {
+  if (response.status === 401 && router && requiresAuthentication(router.currentRoute())) {
     deleteProfile()
     return redirect({ name: 'Login', query: { errormessage: 'You must login in to continue', destination: window.location.pathname } })
   }
@@ -220,4 +218,8 @@ export function formatCurrency (value) {
 const phoneUtil = Libphonenumber.PhoneNumberUtil.getInstance();
 export function formatPhoneNumber(number) {
   return phoneUtil.format(phoneUtil.parse(String(number.digits), number.region), Libphonenumber.PhoneNumberFormat.INTERNATIONAL)
+}
+
+export function requiresAuthentication(route) {
+  return route.meta && route.meta.privileges && (~route.meta.privileges.indexOf("authenticated") || ~route.meta.privileges.indexOf("admin"))
 }

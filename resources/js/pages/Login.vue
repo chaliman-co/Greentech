@@ -30,9 +30,11 @@ import Button from "primevue/button";
 import { postToApi, errorNotification, successNotification, handleErrors, getProfile, JsonBody, redirect } from "@/util";
 import { ref } from "vue";
 import {useStore} from "vuex"
+import {useRouter} from "vue-router"
 const loading = ref(false)
 const errors = ref({})
 const store = useStore();
+const router = useRouter()
 async function submit(event) {
       loading.value = true;
       try {
@@ -48,7 +50,7 @@ async function submit(event) {
           const profile = await getProfile();
           store.commit("set_profile", profile);
           successNotification(`Logged in as ${profile.firstname} ${profile.lastname}`);
-          redirect("/", 5000);
+          redirect("/", router, 5000);
         }
       } catch (err) {
         errorNotification("Network Error");

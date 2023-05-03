@@ -32,7 +32,7 @@ import EditProfile from '../pages/profile/EditProfile.vue'
 import Checkout from '../pages/Checkout.vue'
 import NotFound from '../pages/404.vue'
 import store from '../store/store'
-import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError } from '../util'
+import { AuthenticationError, getProfile, setPageTitle, errorNotification, ServerError, NetworkError, requiresAuthentication } from '../util'
 
 
 const routes = [
@@ -280,9 +280,6 @@ router.beforeEach(async (to, from) => {
   setPageTitle(to.meta && to.meta.title)
   loader.classList.remove("not-loaded")
 })
-function requiresAuthentication(route) {
-  return route.meta && route.meta.privileges && (~route.meta.privileges.indexOf("authenticated") || ~route.meta.privileges.indexOf("admin"))
-}
 function profileIsSet() {
   return store.state.profile
 }

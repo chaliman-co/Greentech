@@ -9,6 +9,7 @@ import Sidebar from "primevue/sidebar"
 import { deleteProfile } from '../util';
 import AdminSidebar from "./AdminSidebar.vue"
 import RegularSidebar from './RegularSidebar.vue';
+import {requiresAuthentication} from '../util'
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const store = useStore()
 const router = useRouter()
@@ -24,6 +25,7 @@ const items = ref([{
       icon: 'pi pi-user-minus',
       command: (args) => {
         deleteProfile()
+        if (requiresAuthentication(route)) router.push()
       }
     },
     {

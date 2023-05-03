@@ -73,13 +73,15 @@ import Button from "primevue/button"
 import { postToApi, errorNotification, successNotification, handleErrors, getProfile, FormDataBody, redirect } from "@/util";
 import { ref } from "vue";
 import {useStore} from "vuex"
+import {useRouter} from "vue-router"
 import telInput from "@/components/tel-input.vue";
 import Dropdown from "primevue/dropdown";
 import countries from "@/assets/countries";
 const  countryFlagsUrl = 'https://raw.githubusercontent.com/lipis/flag-icons/1734912defc091ebaa46d46fdacd564425e643c0/flags/1x1'
 const loading = ref(false)
 const errors = ref({})
-const store = useStore();
+const store = useStore()
+const router = useRouter()
 const firstname = ref("")
 const lastname = ref("")
 const email_address = ref("")
@@ -114,7 +116,7 @@ async function submit(event) {
         } else {
           store.commit("delete_profile")
           successNotification(`Registration Successful`);
-          redirect("Login", 5000);
+          redirect("Login", router, 5000);
         }
       } catch (err) {
         errorNotification("Network Error");

@@ -23,7 +23,7 @@
     </Column>
   </DataTable>
   <DataTable @row-select="router.push(`/products/${$event.data.id}`)" v-if="!loading && products.data.length > 0"
-    :value="products.data" selectionMode="single" dataKey="id">
+    :value="products.data" selectionMode="single" dataKey="id" striped-rows show-gridlines class="my-5 md:my-6 md:mx-6">
     <template #header>
       <div class="flex flex-wrap align-items-center justify-content-between gap-2">
         <span class="text-xl text-900 font-bold">Products</span>
@@ -41,7 +41,7 @@
         {{ formatCurrency(slotProps.data.price) }}
       </template>
     </Column>
-    <template #footer> In total there are {{ products.total }} products. </template>
+    <template #footer> In total, there {{products.total > 1 ? `are ${products.total} products` : `is ${products.total} product`}}</template>
   </DataTable>
   <div v-if="!loading && !products.data.length" class="text-center text-3xl font-bold">No products found.</div>
 </template>

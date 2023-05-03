@@ -20,7 +20,7 @@ const user = computed(() => store.state.currentUser)
 const loading = ref(false)
 onMounted(async () => {
   if (!user.value || user.value.id !== route.params.id) {
-    const userFromStore = store.state.users.data.find(prod => prod.id === Number(route.params.id))
+    const userFromStore = store.state.users.data.find(user => user.id === Number(route.params.id))
     if (userFromStore) store.commit("set_current_user", userFromStore)
     else try {
       const response = await getFromApi(`/users/${route.params.id}`);

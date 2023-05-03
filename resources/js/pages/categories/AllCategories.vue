@@ -1,21 +1,21 @@
 
 <template>
   <DataTable v-if="loading" :value="skeletonCategories">
-    <Column header="name">
+    <Column header="">
       <template #body>
         <Skeleton></Skeleton>
       </template>
     </Column>
   </DataTable>
   <DataTable @row-select="router.push(`/categories/${$event.data.id}`)" v-if="!loading && categories.length > 0"
-    :value="categories" showGridlines selectionMode="single" dataKey="id">
+    :value="categories" showGridlines selectionMode="single" dataKey="id" striped-rows show-gridlines class="cat-table  my-5 md:my-6 md:w-6 mx-auto">
     <template #header>
-      <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+      <div class="flex flex-wrap align-items-center justify-content-center gap-2">
         <span class="text-xl text-900 font-bold">Categories</span>
       </div>
     </template>
-    <Column field="name" header="Name"></Column>
-    <template #footer> In total there are {{ categories.length}} categories. </template>
+    <Column field="name" header=""></Column>
+    <template #footer> In total, there {{categories.length > 1 ? `are ${categories.length} categories` : `is ${categories.length} category`}}.</template>
   </DataTable>
   <div v-if="!loading && !categories.length" class="text-center text-3xl font-bold">No categories found.</div>
 </template>
@@ -54,10 +54,17 @@ onMounted(async () => {
 });
 
 </script>
-<style>
+<style >
 .p-datatable-table {
   margin: auto;
   min-width: 40% !important;
+}
+.cat-table thead {
+  display: none;
+}
+.cat-table * {
+  text-align: center !important;
+  justify-content: center !important;
 }
 
 @media screen and (max-width: 800px) {

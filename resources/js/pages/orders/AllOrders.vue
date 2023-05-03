@@ -28,7 +28,7 @@
     </Column>
   </DataTable>
   <DataTable @row-select="router.push(`/orders/${$event.data.id}`)" v-if="!loading && orders.data.length > 0"
-    :value="orders.data" selectionMode="single" dataKey="id">
+    :value="orders.data" selectionMode="single" dataKey="id" striped-rows show-gridlines class="my-5 md:my-6 md:mx-6">
     <template #header>
       <div class="flex flex-wrap align-items-center justify-content-between gap-2">
         <span class="text-xl text-900 font-bold">Orders</span>
@@ -56,7 +56,7 @@
       </template>
     </Column>
     <Column field="status" header="Status"></Column>
-    <template #footer> In total you have {{ orders.total }} orders. </template>
+    <template #footer> In total, you have placed {{ orders.total }} {{orders.total > 1 ? "orders" : "order"}}.</template>
   </DataTable>
   <div v-if="!loading && !orders.data.length" class="text-center text-3xl font-bold">No orders found.</div>
 </template>

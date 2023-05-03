@@ -17,8 +17,8 @@ const route = useRoute()
 const store = useStore()
 const category = computed(() => store.state.currentCategory)
 onMounted(async () => {
-  if (!category.value || category.value._id !== route.params.id) {
-    const categoryFromStore = store.state.categories.find(prod => prod._id === Number(route.params.id))
+  if (!category.value || category.value.id !== route.params.id) {
+    const categoryFromStore = store.state.categories.find(cat => cat.id === Number(route.params.id))
     if (categoryFromStore) store.commit("set_current_category", categoryFromStore)
     else try {
       const response = await getFromApi(`/categories/${route.params.id}`);

@@ -36,7 +36,10 @@
     @row-select="router.push(`/users/${$event.data.id}`)"
     selectionMode="single" 
     dataKey="id"
-    :value="users.data" >
+    :value="users.data"
+    striped-rows
+    show-gridlines
+    class="my-5 md:my-6 md:mx-6" >
     <template #header>
       <div class="flex flex-wrap align-items-center justify-content-between gap-2">
         <span class="text-xl text-900 font-bold">Users</span>
@@ -59,7 +62,7 @@
       </template>
     </Column>
     <Column field="email_address" header="Email Address"></Column>
-    <template #footer> In total there are {{ users.total }} users. </template>
+    <template #footer> In total, there {{users.total > 1 ? `are ${users.total} users` : `is ${users.total} user`}}</template>
   </DataTable>
   <div v-if="!loading && !users.data.length" class="text-center text-3xl font-bold">No users found.</div>
 </template>

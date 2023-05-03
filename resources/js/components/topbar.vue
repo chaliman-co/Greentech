@@ -25,7 +25,7 @@ const items = ref([{
       icon: 'pi pi-user-minus',
       command: (args) => {
         deleteProfile()
-        if (requiresAuthentication(route)) router.push()
+        if (requiresAuthentication(route)) router.push({name: "Login"})
       }
     },
     {

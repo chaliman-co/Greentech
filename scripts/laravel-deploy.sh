@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "setting .env"
-cp "/var/www/html/public/.env" .
+cp "/etc/secrets/.env" .
 
 
 

@@ -36,5 +36,4 @@ RUN npm install
           
 COPY . .    
 
-RUN --mount=type=secret,id=_env,dst=/var/www/html/.env cp /var/www/html/.env /var/www/html/public/.env
 CMD ["/start.sh"]
